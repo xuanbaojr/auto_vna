@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package instruction;
+
+service GRPCService {
+    rpc GetInstruction (InstructionRequest) returns (InstructionResponse) {}
+}
+
+message InstructionRequest {
+    bytes frame1 = 1;
+    bytes frame2 = 2;
+    bytes frame3 = 3;
+    bytes frame4 = 4;
+}
+
+message InstructionResponse {
+    string instruction_str = 1;
+}
+
+// python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. instruction.proto
