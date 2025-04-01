@@ -11,10 +11,11 @@ message InstructionRequest {
     bytes frame2 = 2;
     bytes frame3 = 3;
     bytes frame4 = 4;
+    string type_instruction = 5;
 }
 
 message InstructionResponse {
     string instruction_str = 1;
 }
 
-// python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. instruction.proto
+// 

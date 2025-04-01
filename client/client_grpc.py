@@ -8,7 +8,7 @@ class CameraClient:
         channel = grpc.insecure_channel("localhost:50051")
         self.stub = instruction_pb2_grpc.GRPCServiceStub(channel)
         
-    def call_grpc_stream(self, frame1, frame2, frame3, frame4):
+    def call_grpc_stream(self, frame1, frame2, frame3, frame4, type_instruction):
         """Send frames to gRPC server and get instruction stream"""
         _, f1 = cv2.imencode('.jpg', frame1)
         _, f2 = cv2.imencode('.jpg', frame2)
@@ -21,6 +21,7 @@ class CameraClient:
             frame2=frame2,
             frame3=frame3,
             frame4=frame4,
+            type_instruction=type_instruction
         )
         return self.stub.GetInstruction(request=request)
 
@@ -30,5 +31,6 @@ if __name__ == "__main__":
     frame2 = cv2.imread("im_.png")
     frame3 = cv2.imread("im_.png")
     frame4 = cv2.imread("im_.png")
-    response = client.call_grpc_stream(frame1, frame2, frame3, frame4)
+    type_instruction = "is_check"
+    response = client.call_grpc_stream(frame1, frame2, frame3, frame4, type_instruction)
     print(response.instruction_str)
