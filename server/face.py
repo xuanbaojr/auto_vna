@@ -1,5 +1,4 @@
 from ultralytics import YOLO
-from get_gg import get_gg
 import os
 import cv2
 import mediapipe as mp
@@ -14,7 +13,7 @@ degrees_map = {"0": [-177, -163, -10, 10], "1": [-180, -175, 175, 180, -10, 10],
                "2": [-176, -163, -40, -10], "3": [-163, -160, -10, 10],
                '4': [-176, -163, 12, 30]}
 
-class Cam1:
+class FaceService:
     def __init__(self):
         self.check_yaw_service = CheckDegreeService()
             
