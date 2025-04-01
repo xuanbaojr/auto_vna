@@ -3,4 +3,3 @@ mediapipe
 ultralytics
 grpcio 
 grpcio-tools
-gdown
