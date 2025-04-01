@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  server:
+    build: ./server
+    ports:
+      - "50051:50051"
+    command: python server_grpc.py
+    volumes:
+      - ./server:/app
+      - pip-cache:/root/.cache/pip
+volumes:
+  pip-cache:
