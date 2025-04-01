@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11instruction.proto\x12\x0binstruction\"T\n\x12InstructionRequest\x12\x0e\n\x06\x66rame1\x18\x01 \x01(\x0c\x12\x0e\n\x06\x66rame2\x18\x02 \x01(\x0c\x12\x0e\n\x06\x66rame3\x18\x03 \x01(\x0c\x12\x0e\n\x06\x66rame4\x18\x04 \x01(\x0c\".\n\x13InstructionResponse\x12\x17\n\x0finstruction_str\x18\x01 \x01(\t2d\n\x0bGRPCService\x12U\n\x0eGetInstruction\x12\x1f.instruction.InstructionRequest\x1a .instruction.InstructionResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11instruction.proto\x12\x0binstruction\"n\n\x12InstructionRequest\x12\x0e\n\x06\x66rame1\x18\x01 \x01(\x0c\x12\x0e\n\x06\x66rame2\x18\x02 \x01(\x0c\x12\x0e\n\x06\x66rame3\x18\x03 \x01(\x0c\x12\x0e\n\x06\x66rame4\x18\x04 \x01(\x0c\x12\x18\n\x10type_instruction\x18\x05 \x01(\t\".\n\x13InstructionResponse\x12\x17\n\x0finstruction_str\x18\x01 \x01(\t2d\n\x0bGRPCService\x12U\n\x0eGetInstruction\x12\x1f.instruction.InstructionRequest\x1a .instruction.InstructionResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -22,9 +22,9 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'instruction_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _globals['_INSTRUCTIONREQUEST']._serialized_start=34
-  _globals['_INSTRUCTIONREQUEST']._serialized_end=118
-  _globals['_INSTRUCTIONRESPONSE']._serialized_start=120
-  _globals['_INSTRUCTIONRESPONSE']._serialized_end=166
-  _globals['_GRPCSERVICE']._serialized_start=168
-  _globals['_GRPCSERVICE']._serialized_end=268
+  _globals['_INSTRUCTIONREQUEST']._serialized_end=144
+  _globals['_INSTRUCTIONRESPONSE']._serialized_start=146
+  _globals['_INSTRUCTIONRESPONSE']._serialized_end=192
+  _globals['_GRPCSERVICE']._serialized_start=194
+  _globals['_GRPCSERVICE']._serialized_end=294
 # @@protoc_insertion_point(module_scope)
