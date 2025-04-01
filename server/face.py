@@ -5,7 +5,7 @@ import os
 current_dir = os.path.dirname(__file__)
 yolo_face_url = "1ZUpSNXj0IfuIgP2hyzmnno9OiU0u50ih"
 output = f"{current_dir}/yolo_face.pt"
-class Session:
+class Cam1:
     def __init__(self):
         pass
         if not os.path.exists(output):

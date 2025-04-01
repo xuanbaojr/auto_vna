@@ -19,8 +19,9 @@ class GRPCServicer(instruction_pb2_grpc.GRPCServiceServicer):
         frame2 = cv2.imdecode(np2, cv2.IMREAD_COLOR)
         frame3 = cv2.imdecode(np3, cv2.IMREAD_COLOR)
         frame4 = cv2.imdecode(np4, cv2.IMREAD_COLOR)
+        type_instruction = request.type_instruction
 
-        response = self.auto_service.get_instruction(frame1, frame2, frame3, frame4)
+        response = self.auto_service.get_instruction(frame1, frame2, frame3, frame4, type_instruction)
         return instruction_pb2.InstructionResponse(instruction_str=response)
     
 def serve():
@@ -39,4 +40,5 @@ def serve():
 
 if __name__ == "__main__":
     logging.basicConfig()
+    
     serve()
