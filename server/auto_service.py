@@ -15,15 +15,14 @@ class AutoService:
             start = time.time()
             self.session_id = self.face_service.is_create_session(frame1)
             print(f"Time check session: {time.time() - start}")
-            if self.session_id is True:
-                return "session: True"
+            if self.session_id == "face:true":
+                return "face: true"
+            else:
+                return "face: false"
             
         if type_instruction == "clothes":
             start = time.time()
-            keypoints = self.clothes_service.get_keypoints(frame1)
+            check_keypoints = self.clothes_service.check_keypoint(frame2)
             print(f"Time check clothes: {time.time() - start}")
-            if keypoints is True:
-                return "clothes:True"
-            else:
-                return f"clothes: {str(keypoints)}"
+            return check_keypoints
 

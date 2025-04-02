@@ -1,46 +1,24 @@
 import cv2
-import mediapipe as mp
 import numpy as np
+from ultralytics import YOLO
+import os
 
-class ClothesService:
-    def __init__(self):
-        mp_pose = mp.solutions.pose
-        self.pose = mp_pose.Pose(static_image_mode=False,
-                    model_complexity=1,
-                    smooth_landmarks=True,
-                    enable_segmentation=False,
-                    min_detection_confidence=0.5,
-                    min_tracking_confidence=0.5)
-        
-        self.indices = [i for i in range(11, 29)]
-    def get_keypoints(self, frame):
-        # Convert BGR to RGB (MediaPipe requires RGB)
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = self.pose.process(rgb_frame)
-        
-        h, w, _ = frame.shape
-        keypoints = []
-        valid_keypoints = []
-        
-        if results.pose_landmarks:
-            for lm in results.pose_landmarks.landmark:
-                x, y = int(lm.x * w), int(lm.y * h)
-                keypoints.append([lm.x, lm.y, lm.z, x, y])
-            
-        for idx in self.indices:
-            if idx < len(keypoints):
-                x, y = keypoints[idx][3], keypoints[idx][4]
-                valid_keypoints.append((x,y))
-        
-        return valid_keypoints
+current_dir = os.path.dirname(__file__)
+model = YOLO(f"{current_dir}/yolov8n-pose.pt")
+
+class CLothesService:
+    def check(self, frame):
+        results = model(frame)
+        keypoints = results[0].keypoints[0].xy.cpu().numpy()[0]
+        for i in range(5,16,2):
+            if keypoints[i].tolist() == [0,0] or keypoints[i+1].tolist() == [0,0]:
+                return "clothes:false"
+            elif abs(keypoints[i][1] - keypoints[i+1][1]) > 50:
+                return "clothes:false"
+        return "clothes:true"
 
 if __name__ == "__main__":
-    # Load the image
-    frame = cv2.imread("im_.png")
-    if frame is None:
-        print("Error: Could not load image. Please check the file path.")
-    else:
-        # Process the image
-        service = ClothesService()
-        keypoints = service.get_keypoints(frame)
-        
+    clothes_service = CLothesService()
+    frame = cv2.imread("im_clothes.png")
+    res = clothes_service.check(frame)
+    print(res)

@@ -23,8 +23,8 @@ class FaceService:
         if pitch is not None and yaw is not None and roll is not None:
             v = degrees_map["0"]
             if v[0] <= pitch <= v[1] and v[2] <= yaw <= v[3]:
-                return True
-        return False
+                return "face:true"
+        return "face:false"
 
 class CheckDegreeService:
     def __init__(self):
