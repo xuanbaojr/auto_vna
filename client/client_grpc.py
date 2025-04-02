@@ -58,7 +58,7 @@ if __name__ == "__main__":
                 frame1, frame2, frame3, frame4 = frames
                 
                 if client.session_id is None:
-                    type_instruction = "hand"
+                    type_instruction = "6d94f513-0c33-446e-9839-d97d8c8945ca"
                     try:
                         response = client.call_grpc_stream(
                             frame1, frame2, frame3, frame4,

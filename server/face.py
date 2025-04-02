@@ -5,9 +5,6 @@ import mediapipe as mp
 import numpy as np
 
 current_dir = os.path.dirname(__file__)
-# yolo_face_url = "1ZUpSNXj0IfuIgP2hyzmnno9OiU0u50ih"
-# output = f"{current_dir}/yolo_face.pt"
-# face_yolo = YOLO(output)
 
 degrees_map = {"0": [-178, -160, -100, 100], "1": [-180, -175, 175, 180, -10, 10], 
                "2": [-176, -163, -40, -10], "3": [-163, -160, -10, 10],
@@ -16,6 +13,7 @@ degrees_map = {"0": [-178, -160, -100, 100], "1": [-180, -175, 175, 180, -10, 10
 class FaceService:
     def __init__(self):
         self.check_yaw_service = CheckDegreeService()
+        self.save_service = SaveService()
             
     def is_create_session(self, frame):
 
@@ -25,7 +23,37 @@ class FaceService:
             if v[2] <= yaw <= v[3]:
                 return "face:true"
         return "face:false"
-
+    
+    def get_instruction(self, frame, session_id):
+        saved_ims = self.save_service.get_image(session_id)        # 0
+        print("saved_ims", saved_ims)
+        un_saved_ims = [k for k,v in degrees_map.items() if k not in saved_ims]
+        if len(un_saved_ims) == 0:
+            return "face:done"
+        else:
+            pitch, yaw, roll = self.check_yaw_service.get_degree(frame)
+            if pitch is not None and yaw is not None and roll is not None:
+                for k in un_saved_ims:
+                    if k == "1":
+                        v = degrees_map[k]
+                        if (v[0] < pitch < v[1] or (v[2] < pitch < v[3]) and v[4] < yaw < v[5]):
+                            self.save_service.save_image(frame, k)
+                            return f"face:{k}"
+                    else:
+                        v = degrees_map[k]
+                        if v[0] < pitch < v[1] and v[2] < yaw < v[3]:
+                            self.save_service.save_image(frame, k)
+                            return f"face:{k}"
+                        
+            if un_saved_ims[0] == "1":
+                return "face:up"
+            elif un_saved_ims[0] == "2":
+                return "face:right"
+            elif un_saved_ims[0] == "3":
+                return "face:down"
+            elif un_saved_ims[0] == "4":
+                return "face:left"
+            
 class CheckDegreeService:
     def __init__(self):
         self.mp_face_mesh = mp.solutions.face_mesh
@@ -116,4 +144,30 @@ class CheckDegreeService:
         rotation_matrix, _ = cv2.Rodrigues(rotation_vector)
         pitch, yaw, roll = self.get_euler_angles(rotation_matrix)
         return pitch, yaw, roll
-        
+
+class SaveService:
+    def get_image(self, session_id):
+        self.im_dir = f"{current_dir}/session/{session_id}"
+        if not os.path.exists(self.im_dir):
+            os.makedirs(self.im_dir, exist_ok=True)
+        saved_ims = []
+        for im_name in os.listdir(self.im_dir):
+            print("im_name", im_name)
+            saved_ims.append(im_name.split(".")[0])
+        return saved_ims
+    
+    def save_image(self, image, name):
+        cv2.imwrite(f"{self.im_dir}/{name}.jpg", image)
+
+if __name__ == "__main__":
+    face_service = FaceService()
+    cap = cv2.VideoCapture(0)
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        instruction = face_service.get_instruction(frame)
+        print(instruction)
+        cv2.imshow("Frame", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
