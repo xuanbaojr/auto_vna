@@ -27,12 +27,99 @@ class CameraClient:
         )
         return self.stub.GetInstruction(request=request)
 
+import threading
+import queue
+import time
+import cv2
+
 if __name__ == "__main__":
+    client = CameraClient()
+    cap = cv2.VideoCapture(0)
+    
+    # Create a queue for passing frames between threads
+    frame_queue = queue.Queue(maxsize=10)
+    
+    # Flag to signal thread termination
+    stop_event = threading.Event()
+    
+    if not cap.isOpened():
+        print("Error: Could not open webcam")
+        exit()
+    
+    # Thread function for processing frames
+    def process_frames():
+        while not stop_event.is_set():
+            try:
+                # Get frames from queue with timeout
+                frames = frame_queue.get(timeout=1)
+                if frames is None:
+                    continue
+                
+                frame1, frame2, frame3, frame4 = frames
+                
+                if client.session_id is None:
+                    type_instruction = "hand"
+                    try:
+                        response = client.call_grpc_stream(
+                            frame1, frame2, frame3, frame4,
+                            type_instruction
+                        )
+                        print(response.instruction_str)
+                    except Exception as e:
+                        print(f"Error calling gRPC: {e}")
+                
+                frame_queue.task_done()
+            except queue.Empty:
+                continue
+    
+    # Start processing thread
+    processing_thread = threading.Thread(target=process_frames)
+    processing_thread.daemon = True
+    processing_thread.start()
+    
+    try:
+        while True:
+            # Capture frame-by-frame
+            ret, frame1 = cap.read()
+            
+            if ret:
+                # Create copies of the frame
+                frame2 = frame1.copy()
+                frame3 = frame1.copy()
+                frame4 = frame1.copy()
+                
+                # Add frames to queue if there's room (non-blocking)
+                try:
+                    frames = (frame1.copy(), frame2, frame3, frame4)
+                    if not frame_queue.full():
+                        frame_queue.put_nowait(frames)
+                except queue.Full:
+                    # Skip this frame if queue is full
+                    pass
+                
+                # Display the frame immediately
+                cv2.imshow('Real-time Processing', frame1)
+                
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+                
+    finally:
+        # Signal the processing thread to stop
+        stop_event.set()
+        
+        # Wait for processing thread to finish
+        processing_thread.join(timeout=1)
+        
+        # Clean up
+        cap.release()
+        cv2.destroyAllWindows()
+
+# using video .mp4
     # client = CameraClient()
-    # cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture("hand.mp4")
 
     # if not cap.isOpened():
-    #     print("Error: Could not open webcam")
+    #     print("Error: Could not open video")
     #     exit()
     # try:
     #     while True:
@@ -43,7 +130,7 @@ if __name__ == "__main__":
     #         frame4 = frame1.copy()
     #         if ret:
     #             if client.session_id is None:
-    #                 type_instruction = "is_check"
+    #                 type_instruction = "hand"
     #                 try:
     #                     response = client.call_grpc_stream(
     #                         frame1, frame2, frame3, frame4,
@@ -57,40 +144,6 @@ if __name__ == "__main__":
     #         if cv2.waitKey(1) & 0xFF == ord('q'):
     #             break
             
-    # finally:
+    # finally:    
     #     cap.release()
     #     cv2.destroyAllWindows()
-
-# using video .mp4
-    client = CameraClient()
-    cap = cv2.VideoCapture("hand.mp4")
-
-    if not cap.isOpened():
-        print("Error: Could not open video")
-        exit()
-    try:
-        while True:
-            # Capture frame-by-frame
-            ret, frame1 = cap.read()
-            frame2 = frame1.copy()
-            frame3 = frame1.copy()
-            frame4 = frame1.copy()
-            if ret:
-                if client.session_id is None:
-                    type_instruction = "hand"
-                    try:
-                        response = client.call_grpc_stream(
-                            frame1, frame2, frame3, frame4,
-                            type_instruction
-                        )
-                        print(response.instruction_str)
-                    except Exception as e:
-                        print(f"Error calling gRPC: {e}")
-                
-            cv2.imshow('Real-time Processing', frame1)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-            
-    finally:    
-        cap.release()
-        cv2.destroyAllWindows()
