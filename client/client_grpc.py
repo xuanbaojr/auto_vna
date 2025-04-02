@@ -28,11 +28,45 @@ class CameraClient:
         return self.stub.GetInstruction(request=request)
 
 if __name__ == "__main__":
+    # client = CameraClient()
+    # cap = cv2.VideoCapture(0)
+
+    # if not cap.isOpened():
+    #     print("Error: Could not open webcam")
+    #     exit()
+    # try:
+    #     while True:
+    #         # Capture frame-by-frame
+    #         ret, frame1 = cap.read()
+    #         frame2 = frame1.copy()
+    #         frame3 = frame1.copy()
+    #         frame4 = frame1.copy()
+    #         if ret:
+    #             if client.session_id is None:
+    #                 type_instruction = "is_check"
+    #                 try:
+    #                     response = client.call_grpc_stream(
+    #                         frame1, frame2, frame3, frame4,
+    #                         type_instruction
+    #                     )
+    #                     print(response.instruction_str)
+    #                 except Exception as e:
+    #                     print(f"Error calling gRPC: {e}")
+                
+    #         cv2.imshow('Real-time Processing', frame1)
+    #         if cv2.waitKey(1) & 0xFF == ord('q'):
+    #             break
+            
+    # finally:
+    #     cap.release()
+    #     cv2.destroyAllWindows()
+
+# using video .mp4
     client = CameraClient()
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("hand.mp4")
 
     if not cap.isOpened():
-        print("Error: Could not open webcam")
+        print("Error: Could not open video")
         exit()
     try:
         while True:
@@ -43,7 +77,7 @@ if __name__ == "__main__":
             frame4 = frame1.copy()
             if ret:
                 if client.session_id is None:
-                    type_instruction = "clothes"
+                    type_instruction = "hand"
                     try:
                         response = client.call_grpc_stream(
                             frame1, frame2, frame3, frame4,
@@ -57,6 +91,6 @@ if __name__ == "__main__":
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
             
-    finally:
+    finally:    
         cap.release()
         cv2.destroyAllWindows()

@@ -8,7 +8,7 @@ output = f"{current_dir}/yolo_hand.pt"
 hand_yolo = YOLO(output)
 
 class HandService:
-    def is_capture(self, frame):
+    def check(self, frame):
         results = hand_yolo(frame)
         if len(results[0].boxes.cls) == 2:
             return "hand:true"

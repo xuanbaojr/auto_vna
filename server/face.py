@@ -9,7 +9,7 @@ current_dir = os.path.dirname(__file__)
 # output = f"{current_dir}/yolo_face.pt"
 # face_yolo = YOLO(output)
 
-degrees_map = {"0": [-177, -163, -10, 10], "1": [-180, -175, 175, 180, -10, 10], 
+degrees_map = {"0": [-178, -160, -100, 100], "1": [-180, -175, 175, 180, -10, 10], 
                "2": [-176, -163, -40, -10], "3": [-163, -160, -10, 10],
                '4': [-176, -163, 12, 30]}
 
@@ -22,7 +22,7 @@ class FaceService:
         pitch, yaw, roll = self.check_yaw_service.get_degree(frame)
         if pitch is not None and yaw is not None and roll is not None:
             v = degrees_map["0"]
-            if v[0] <= pitch <= v[1] and v[2] <= yaw <= v[3]:
+            if v[2] <= yaw <= v[3]:
                 return "face:true"
         return "face:false"
 
@@ -30,7 +30,7 @@ class CheckDegreeService:
     def __init__(self):
         self.mp_face_mesh = mp.solutions.face_mesh
         self.face_mesh = self.mp_face_mesh.FaceMesh(
-            static_image_mode=True,
+            static_image_mode=False,
             max_num_faces=1,
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5
