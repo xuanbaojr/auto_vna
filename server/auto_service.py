@@ -12,11 +12,12 @@ class AutoService:
         self.clothes_service = ClothesService()
     def get_instruction(self, frame1, frame2, frame3, frame4, type_instruction):
         if type_instruction == "is_check":
-            start = time.time()
-            self.session_id = self.face_service.is_create_session(frame1)
-            print(f"Time check session: {time.time() - start}")
-            if self.session_id is True:
-                return "session: True"
+            return "haha"
+            # start = time.time()
+            # self.session_id = self.face_service.is_create_session(frame1)
+            # print(f"Time check session: {time.time() - start}")
+            # if self.session_id is True:
+            #     return "session: True"
             
         if type_instruction == "clothes":
             start = time.time()
