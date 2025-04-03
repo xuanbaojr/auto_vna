@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Avalonia.Svg.Skia"
+        x:Class="MyASCS.Views.OnboardingWindow"
+        Title="ASCS Welcome"
+        Width="1280"
+        Height="720"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False"
+        ShowInTaskbar="False">
+
+    <Grid>
+        <!-- Background Image -->
+        <Image Stretch="UniformToFill">
+            <Image.Source>
+                <svg:SvgImage Source="avares://MyASCS/Assets/onboarding_background.svg"/>
+            </Image.Source>
+        </Image>
+
+        <!-- Loading UI Container -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,40">
+            
+            <!-- Title Text -->
+            <TextBlock Text="Attendant Standards Checking System - ASCS"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       TextAlignment="Center"
+                       Margin="0,0,0,10"/>
+
+            <!-- Progress Bar -->
+            <ProgressBar Name="LoadingBar" Minimum="0" Maximum="100" Width="500" Height="6"/>
+
+            <!-- Loading Text -->
+            <TextBlock Text="Now Loading"
+                       FontSize="14"
+                       Foreground="White"
+                       TextAlignment="Center"
+                       Margin="0,5,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,280 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="MyASCS.Views.MainWindow"
+        Title="ASCS - RTSP Camera Viewer"
+        Width="1280"
+        Height="720"
+        Background="#1E1E1E"
+        WindowStartupLocation="CenterScreen"
+        xmlns:vm="clr-namespace:MyASCS.ViewModels"
+        xmlns:myAscs="clr-namespace:MyASCS"
+        x:DataType="vm:MainViewModel">
+
+    <Grid>
+        <!-- Layout Container -->
+        <Grid>
+            <!-- Grid Layout Bình Thường - Hiển thị khi không ở chế độ FaceID và không ở chế độ Hands -->
+            <Grid Margin="10" RowDefinitions="*,*,Auto" ColumnDefinitions="*,*">
+                <!-- Điều kiện hiển thị - chỉ hiển thị khi không ở chế độ FaceID và không ở chế độ Hands -->
+                <Grid.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <Binding Path="!RtspStreamViewModel.IsFaceIdMode" />
+                        <Binding Path="!RtspStreamViewModel.IsHandsMode" />
+                    </MultiBinding>
+                </Grid.IsVisible>
+                
+                <!-- Camera 1 -->
+                <Border Grid.Row="0" Grid.Column="0" Background="Black" Margin="5" CornerRadius="8">
+                    <Grid>
+                        <Image Source="{Binding RtspStreamViewModel.Camera1Image}" Stretch="UniformToFill"/>
+                        <TextBlock Text="Camera 1"
+                                   Foreground="White"
+                                   Background="#80000000"
+                                   FontSize="12"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Padding="5"
+                                   Margin="5"/>
+                    </Grid>
+                </Border>
+
+                <!-- Camera 2 -->
+                <Border Grid.Row="0" Grid.Column="1" Background="Black" Margin="5" CornerRadius="8">
+                    <Grid>
+                        <Image Source="{Binding RtspStreamViewModel.Camera2Image}" Stretch="UniformToFill"/>
+                        <TextBlock Text="Camera 2"
+                                   Foreground="White"
+                                   Background="#80000000"
+                                   FontSize="12"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Padding="5"
+                                   Margin="5"/>
+                    </Grid>
+                </Border>
+
+                <!-- Camera 3 -->
+                <Border Grid.Row="1" Grid.Column="0" Background="Black" Margin="5" CornerRadius="8">
+                    <Grid>
+                        <Image Source="{Binding RtspStreamViewModel.Camera3Image}" Stretch="UniformToFill"/>
+                        <TextBlock Text="Camera 3"
+                                   Foreground="White"
+                                   Background="#80000000"
+                                   FontSize="12"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Padding="5"
+                                   Margin="5"/>
+                    </Grid>
+                </Border>
+
+                <!-- Camera 4 -->
+                <Border Grid.Row="1" Grid.Column="1" Background="Black" Margin="5" CornerRadius="8">
+                    <Grid>
+                        <Image Source="{Binding RtspStreamViewModel.Camera4Image}" Stretch="UniformToFill"/>
+                        <TextBlock Text="Camera 4"
+                                   Foreground="White"
+                                   Background="#80000000"
+                                   FontSize="12"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Padding="5"
+                                   Margin="5"/>
+                    </Grid>
+                </Border>
+
+                <!-- Footer -->
+                <Border Grid.Row="2" Grid.ColumnSpan="2" Background="#000000" Padding="10">
+                    <TextBlock Text="Please stay in the center of the frame. The identification process will take place automatically"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               FontSize="14"/>
+                </Border>
+            </Grid>
+
+            <!-- Grid Layout Chế Độ FaceID - Camera 1 phóng to -->
+            <Grid IsVisible="{Binding RtspStreamViewModel.IsFaceIdMode}"
+                  RowDefinitions="*,Auto"
+                  ColumnDefinitions="7*,3*"
+                  Margin="10">
+                
+                <!-- Camera 1 Phóng To -->
+                <Border Grid.Row="0" Grid.Column="0" Background="Black" Margin="5" CornerRadius="8">
+                    <Grid>
+                        <Image Source="{Binding RtspStreamViewModel.Camera1Image}" Stretch="UniformToFill"/>
+                        <TextBlock Text="Camera 1 - Face ID"
+                                   Foreground="White"
+                                   Background="#80000000"
+                                   FontSize="16"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Padding="8"
+                                   Margin="8"/>
+                    </Grid>
+                </Border>
+
+                <!-- Panel Camera Phụ -->
+                <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="*,*,*">
+                    <!-- Camera 2 Thu Nhỏ -->
+                    <Border Grid.Row="0" Background="Black" Margin="5" CornerRadius="8">
+                        <Grid>
+                            <Image Source="{Binding RtspStreamViewModel.Camera2Image}" Stretch="UniformToFill"/>
+                            <TextBlock Text="Camera 2"
+                                       Foreground="White"
+                                       Background="#80000000"
+                                       FontSize="10"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Padding="3"
+                                       Margin="3"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Camera 3 Thu Nhỏ -->
+                    <Border Grid.Row="1" Background="Black" Margin="5" CornerRadius="8">
+                        <Grid>
+                            <Image Source="{Binding RtspStreamViewModel.Camera3Image}" Stretch="UniformToFill"/>
+                            <TextBlock Text="Camera 3"
+                                       Foreground="White"
+                                       Background="#80000000"
+                                       FontSize="10"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Padding="3"
+                                       Margin="3"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Camera 4 Thu Nhỏ -->
+                    <Border Grid.Row="2" Background="Black" Margin="5" CornerRadius="8">
+                        <Grid>
+                            <Image Source="{Binding RtspStreamViewModel.Camera4Image}" Stretch="UniformToFill"/>
+                            <TextBlock Text="Camera 4"
+                                       Foreground="White"
+                                       Background="#80000000"
+                                       FontSize="10"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Padding="3"
+                                       Margin="3"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- Footer cho chế độ FaceID -->
+                <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#000000" Padding="10">
+                    <TextBlock Text="Face ID Verification - Please follow the instructions carefully"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               FontSize="14"/>
+                </Border>
+            </Grid>
+            
+            <!-- Grid Layout Chế Độ Hands - Camera 4 phóng to -->
+            <Grid IsVisible="{Binding RtspStreamViewModel.IsHandsMode}"
+                  RowDefinitions="*,Auto"
+                  ColumnDefinitions="7*,3*"
+                  Margin="10">
+                
+                <!-- Camera 4 Phóng To -->
+                <Border Grid.Row="0" Grid.Column="0" Background="Black" Margin="5" CornerRadius="8">
+                    <Grid>
+                        <Image Source="{Binding RtspStreamViewModel.Camera4Image}" Stretch="UniformToFill"/>
+                        <TextBlock Text="Camera 4 - Hand Scanning"
+                                   Foreground="White"
+                                   Background="#80000000"
+                                   FontSize="16"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Padding="8"
+                                   Margin="8"/>
+                    </Grid>
+                </Border>
+
+                <!-- Panel Camera Phụ -->
+                <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="*,*,*">
+                    <!-- Camera 1 Thu Nhỏ -->
+                    <Border Grid.Row="0" Background="Black" Margin="5" CornerRadius="8">
+                        <Grid>
+                            <Image Source="{Binding RtspStreamViewModel.Camera1Image}" Stretch="UniformToFill"/>
+                            <TextBlock Text="Camera 1"
+                                       Foreground="White"
+                                       Background="#80000000"
+                                       FontSize="10"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Padding="3"
+                                       Margin="3"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Camera 2 Thu Nhỏ -->
+                    <Border Grid.Row="1" Background="Black" Margin="5" CornerRadius="8">
+                        <Grid>
+                            <Image Source="{Binding RtspStreamViewModel.Camera2Image}" Stretch="UniformToFill"/>
+                            <TextBlock Text="Camera 2"
+                                       Foreground="White"
+                                       Background="#80000000"
+                                       FontSize="10"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Padding="3"
+                                       Margin="3"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Camera 3 Thu Nhỏ -->
+                    <Border Grid.Row="2" Background="Black" Margin="5" CornerRadius="8">
+                        <Grid>
+                            <Image Source="{Binding RtspStreamViewModel.Camera3Image}" Stretch="UniformToFill"/>
+                            <TextBlock Text="Camera 3"
+                                       Foreground="White"
+                                       Background="#80000000"
+                                       FontSize="10"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Padding="3"
+                                       Margin="3"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- Footer cho chế độ Hands -->
+                <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#000000" Padding="10">
+                    <TextBlock Text="Hand Scanning Mode - Please place your hand on the scanner as instructed"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               FontSize="14"/>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- Overlay Panel cho Thông báo và Đếm ngược - Hiển thị trên cả hai chế độ -->
+        <Grid IsVisible="{Binding RtspStreamViewModel.IsMessageVisible}">
+            <!-- Background overlay -->
+            <Rectangle Fill="#AA000000" />
+            
+            <!-- Panel chứa cả thông báo và đếm ngược -->
+            <StackPanel VerticalAlignment="Center" 
+                        HorizontalAlignment="Center"
+                        Spacing="20">
+                        
+                <!-- Thông báo chính -->
+                <TextBlock Text="{Binding RtspStreamViewModel.UserMessage}" 
+                           FontSize="24" 
+                           Foreground="White" 
+                           FontWeight="Bold"
+                           Padding="10"
+                           TextAlignment="Center"/>
+                
+                <!-- Đếm ngược -->
+                <TextBlock Text="{Binding RtspStreamViewModel.CountdownText}" 
+                           FontSize="72" 
+                           Foreground="Yellow" 
+                           FontWeight="Bold"
+                           TextAlignment="Center"
+                           IsVisible="{Binding RtspStreamViewModel.IsCountdownVisible}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
