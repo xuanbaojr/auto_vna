@@ -1,0 +1,77 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="MyASCS.Views.IntroductionWindow"
+        Title="ASCS"
+        Width="1280"
+        Height="720"
+        Background="White"
+        WindowStartupLocation="CenterScreen">
+    <Window.Styles>
+        <Style Selector="Button.startButton">
+            <Setter Property="Background" Value="#CD9746"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" CornerRadius="20">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Foreground="White"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <!-- Hover Effect -->
+        <Style Selector="Button.startButton:pointerover">
+            <Setter Property="Background" Value="#cf8a00"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid>
+        <!-- Split the UI into two sections -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Side -->
+        <StackPanel Grid.Column="0" Margin="70,90,70,90" Background="White">
+            <TextBlock Text="Attendant Standards Checking System" 
+                       FontSize="24" FontWeight="Bold" Foreground="#2B6777"/>
+            
+            <!-- Description paragraph -->
+            <TextBlock TextWrapping="Wrap" Margin="0,20,0,30" LineHeight="24" Foreground="Black">
+                <Run Text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
+            </TextBlock>
+            
+            <TextBlock Text="Before using the application please comply with the following regulations." 
+                       TextWrapping="Wrap" Margin="0,10,0,30" Foreground="Black"/>
+            
+            <!-- Icons in a horizontal layout -->
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,50" Spacing="30">
+                <Image Source="/Assets/card.png" Width="70" Height="70"/>
+                <Image Source="/Assets/face_mask.png" Width="70" Height="70"/>
+                <Image Source="/Assets/glasses.png" Width="70" Height="70"/>
+            </StackPanel>
+            
+            <!-- Button with hover effect -->
+            <Button Name="StartButton"
+                    Classes="startButton"
+                    Margin="0,20,0,0">
+                <TextBlock Text="Start Identifying"
+                           TextAlignment="Center"/>
+            </Button>
+        </StackPanel>
+
+        <!-- Right Side - Image -->
+        <Image Grid.Column="1" Source="/Assets/welcome_image.png" Stretch="UniformToFill"/>
+    </Grid>
+</Window>

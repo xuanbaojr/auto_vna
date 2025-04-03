@@ -3,3 +3,5 @@ test.py
 *.mp4
 test1.py
 yolov11n-face.pt
+/client/ASCS/bin
+/client/ASCS/obj
